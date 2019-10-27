@@ -1,0 +1,24 @@
+server:
+  port: 8080
+info:
+  app:
+    name: config-server
+    description: reto3-uniandes-config-server
+    version: 1.0  
+aws:
+  paramstore:
+    prefix: /dev
+    enabled: true
+# Management Configuration
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health,info
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: config-server
