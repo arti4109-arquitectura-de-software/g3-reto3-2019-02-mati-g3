@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: config-server
+  cloud:
+    config:
+      uri: http://localhost:8080
+      profile: dev
+      fail-fast: false
+      enabled: true

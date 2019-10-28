@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: dev
+server:
+  port: 9018
+external:
+  endpoint:
+    format: ${adapter}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
