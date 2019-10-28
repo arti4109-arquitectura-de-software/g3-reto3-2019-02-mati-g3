@@ -19,7 +19,7 @@ public class ConverterController {
     @Autowired
     private ConverterService converterService;
 
-    @RequestMapping(value = "/adapter/xml/converter", method = RequestMethod.POST)
+    @RequestMapping(value = "/adapter/yaml/converter", method = RequestMethod.POST)
     public ResponseEntity<String> createBand(@RequestBody String data) throws Exception {
 
         CompletableFuture<String> result =  converterService.converterYamlToJson(data);
