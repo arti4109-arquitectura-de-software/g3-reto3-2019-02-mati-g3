@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.CompletableFuture;
+
 @RequestMapping("/api")
 @RestController
 public class ConverterController {
@@ -17,7 +19,13 @@ public class ConverterController {
 
     @RequestMapping(value = "/adapter/xml/converter", method = RequestMethod.POST)
     public ResponseEntity<String> createBand(@RequestBody String data) throws Exception {
-        return ResponseEntity.ok(converterService.converterXmlToJson(data));
+
+        CompletableFuture<String> result = converterService.converterXmlToJson(data);
+
+        // Wait until they are all done
+        CompletableFuture.allOf(result).join();
+
+        return ResponseEntity.ok(result.get());
     }
 
 }

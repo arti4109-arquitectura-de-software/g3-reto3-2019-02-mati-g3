@@ -1,36 +1,34 @@
 package com.holding.adapter.yaml.service.impl;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.holding.adapter.yaml.service.ConverterService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class ConverterServiceImpl implements ConverterService {
 
     @Override
-    public String converterYamlToJson(String yaml) throws Exception {
+    @Async
+    public CompletableFuture<String> converterYamlToJson(String yaml) throws Exception {
+
+        System.out.println("converterYamlToJson Executing thread name - " + Thread.currentThread().getName());
 
         String response = "";
         try {
             ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
             Object obj = yamlReader.readValue(yaml, Object.class);
             ObjectMapper jsonWriter = new ObjectMapper();
-            return jsonWriter.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-        } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+            response =  jsonWriter.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
-        return response;
+        return CompletableFuture.completedFuture(response);
     }
 }

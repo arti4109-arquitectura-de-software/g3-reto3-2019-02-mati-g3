@@ -1,20 +1,23 @@
 package com.holding.adapter.xml.service.impl;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.holding.adapter.xml.service.ConverterService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class ConverterServiceImpl implements ConverterService {
 
     @Override
-    public String converterXmlToJson(String data) throws Exception {
+    @Async
+    public CompletableFuture<String> converterXmlToJson(String data) throws Exception {
+
+        System.out.println("converterXmlToJson Executing thread name - " + Thread.currentThread().getName());
 
         String response = "";
         try
@@ -31,22 +34,11 @@ public class ConverterServiceImpl implements ConverterService {
             //Get JSON as a string
             response = objectMapper.writeValueAsString(jsonNode);
 
-            System.out.println("*** Converting XML to JSON ***");
-            System.out.println(response);
-
-
-        } catch (JsonParseException e)
-        {
-            e.printStackTrace();
-        } catch (JsonMappingException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e)
-        {
+        } catch (IOException e){
             e.printStackTrace();
         }
 
 
-        return response;
+        return CompletableFuture.completedFuture(response);
     }
 }

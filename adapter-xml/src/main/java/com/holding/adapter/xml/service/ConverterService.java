@@ -1,7 +1,9 @@
 package com.holding.adapter.xml.service;
 
 
+import java.util.concurrent.CompletableFuture;
+
 public interface ConverterService {
 
-    String converterXmlToJson(String data) throws Exception ;
+    CompletableFuture<String> converterXmlToJson(String data) throws Exception ;
 }
